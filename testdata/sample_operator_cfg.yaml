@@ -1,0 +1,43 @@
+# handler for adapter mygrpcadapter
+## the auth_key is the value which we want to see in the header
+# The key in line 26 is the name to which we map the request header. We could have left it as is, but this is just to make the point.
+# i.e. the mixer takes the value of the header and assigns it as a value of the key in the map which is passed to the adapter code
+# that is why we look for the key "custom_token_header" in the map
+# notice how the client is passing the x-ebay-ldfi header
+apiVersion: "config.istio.io/v1alpha2"
+kind: handler
+metadata:
+  name: h1
+  namespace: istio-system
+spec:
+  adapter: mygrpcadapter
+  connection:
+    address: "[::]:50376"
+  params:
+    auth_key: "abc"
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: instance
+metadata:
+  name: icheck
+  namespace: istio-system
+spec:
+  template: authorization
+  params:
+    subject:
+      properties:
+        custom_token_header:  request.headers["x-ebay-ldfi"]
+---
+
+# rule to dispatch to handler h1
+apiVersion: "config.istio.io/v1alpha2"
+kind: rule
+metadata:
+  name: r1
+  namespace: istio-system
+spec:
+  actions:
+    - handler: h1.istio-system
+      instances:
+        - icheck
+---
