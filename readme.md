@@ -1,3 +1,5 @@
+Once you are done with the development of the adapter. The procedure to test the adapter locally is below.
+
 Starting the server :
 
 mixs server

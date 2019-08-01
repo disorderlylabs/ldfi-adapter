@@ -12,7 +12,7 @@ metadata:
 spec:
   adapter: mygrpcadapter
   connection:
-    address: "[::]:50376"
+    address: "mygrpcadapterservice:44225"
   params:
     auth_key: "abc"
 ---
