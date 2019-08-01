@@ -4,6 +4,8 @@
 # i.e. the mixer takes the value of the header and assigns it as a value of the key in the map which is passed to the adapter code
 # that is why we look for the key "custom_token_header" in the map
 # notice how the client is passing the x-ebay-ldfi header
+
+# the first spec here is the handler
 apiVersion: "config.istio.io/v1alpha2"
 kind: handler
 metadata:
@@ -12,9 +14,11 @@ metadata:
 spec:
   adapter: mygrpcadapter
   connection:
-    address: "mygrpcadapterservice:44225"
+    address: "mygrpcadapterservice:44225" 
   params:
     auth_key: "abc"
+
+#  we provide an input instance that uses a request header to fill in the value
 ---
 apiVersion: "config.istio.io/v1alpha2"
 kind: instance
