@@ -1,6 +1,7 @@
+
 Follow link : https://istio.io/docs/setup/kubernetes/install/kubernetes/
 
-```bash
+```shell script
 for i in install/kubernetes/helm/istio-init/files/crd*yaml; do kubectl apply -f $i; done
 
 kubectl apply -f install/kubernetes/istio-demo.yaml
@@ -17,13 +18,13 @@ To access the gateway, use the service’s NodePort, or use port-forwarding inst
 
 Ensure that istio pods running:
 
-```bash
+```shell script
 kubectl get pods -n istio-system
 ```
 
 Deploying Bookinfo :
 
-```bash
+```shell script
 kubectl label namespace default istio-injection=enabled
 
 kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
@@ -31,19 +32,19 @@ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 
 Check if services are running :
 
-```bash
+```shell script
 kubectl get services
 
 # there should be a cluster-ip 
 
-kubectl get pods
+kubectl get pods --all-namespaces
 
 # status of the pods should be running, this will take a few minutes
 ```
 
 Check if the app is running :
 
-```bash
+```shell script
 kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}') -c ratings -- curl productpage:9080/productpage
 
 some html will be there as output
@@ -51,7 +52,7 @@ some html will be there as output
 
 Next, we need a gateway to be able to access bookinfo
 
-```bash
+```shell script
 kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 
 Output :
@@ -66,11 +67,15 @@ bookinfo-gateway   44s
 
 On minikube the ingress-gateway won't have externalip, we need to take some steps to expose the gateway for local developement
 
-```bash
+```shell script
+
 -- general k8s with external LB
 export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
 export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
+```
+
+```shell script
 
 -- for minkube we will need to use the minikube ip and node ports
 export INGRESS_HOST=$(minikube ip)
@@ -90,6 +95,6 @@ GATEWAY_URL=192.168.99.100:31380
 
 # cleanup Bookinfo
 
-```bash
+```shell script
 samples/bookinfo/platform/kube/cleanup.sh
 ```

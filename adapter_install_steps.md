@@ -9,9 +9,6 @@ Finally, since we are running in the cluster, we will supply the address in the 
 mygrpcadapterservice:44225
 ```
 
-For working with minikube run the command first, in each of the terminal instances :
-```shell script
-eval $(minikube docker-env)
 ```
 
 The commands are in adapter.sh. Summarized below
@@ -32,7 +29,7 @@ eval $(docker-machine env -u)
 To confirm if the sidecar is running the READY column should be 2/2, see an example below :
 
 ```shell script
-$ kubectl get pods
+$ kubectl get pods --all-namespaces
 NAME                             READY   STATUS    RESTARTS   AGE
 details-v1-6f4c4dfb85-ts4gc      2/2     Running   0          30h
 productpage-v1-bb79f5cc5-xtsnd   2/2     Running   0          30h
