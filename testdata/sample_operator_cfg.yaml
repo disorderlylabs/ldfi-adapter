@@ -30,7 +30,15 @@ spec:
   params:
     subject:
       properties:
+        respo: ( response.headers["x-request-id"] | "unknown" )
+        x-tags: request.headers["x-b3-flags"]
+        x-req: request.headers["x-request-id"]
+        #ldfi_baggage:  request.headers["x-datadog-trace-id"]
         custom_token_header:  request.headers["x-ebay-ldfi"]
+        destination_svc: ( destination.service.name | "unknown" )
+        operation: ( api.operation | "unknown" ) 
+        api_svc: (api.service | "unknown")
+        source_name: ( source.name | "unknown" ) 
 ---
 
 # rule to dispatch to handler h1
@@ -40,6 +48,14 @@ metadata:
   name: r1
   namespace: istio-system
 spec:
+  requestHeaderOperations:
+        - name: x-request-id
+          values: 
+            - request.headers["x-request-id"] + "|" + ( response.headers["x-request-id"] | "unknown" ) + "||" +  ( destination.service.name | "unknown" ) 
+  responseHeaderOperations:
+        - name: x-request-id
+          values: 
+            - request.headers["x-request-id"] + "|" +  ( response.headers["x-request-id"] | "unknown" ) + "||" + ( destination.service.name | "unknown" )
   actions:
     - handler: h1.istio-system
       instances:

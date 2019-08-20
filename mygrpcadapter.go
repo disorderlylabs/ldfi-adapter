@@ -38,6 +38,7 @@ type (
 var _ authorization.HandleAuthorizationServiceServer = &MyGrpcAdapter{}
 
 // HandleMetric records metric entries
+//func (s *MyGrpcAdapter) HandleAuthorization(ctx context.Context, r *authorization.HandleAuthorizationRequest) (*v1beta1.CheckResult, error) {
 func (s *MyGrpcAdapter) HandleAuthorization(ctx context.Context, r *authorization.HandleAuthorizationRequest) (*v1beta1.CheckResult, error) {
 
 	log.Infof("received request %v\n", *r)
@@ -80,18 +81,20 @@ func (s *MyGrpcAdapter) HandleAuthorization(ctx context.Context, r *authorizatio
 
 	for k, v := range props {
 		fmt.Println("k:", k, "v:", v)
-		if (k == "custom_token_header") && v == cfg.AuthKey {
-			log.Infof("success!!")
-			return &v1beta1.CheckResult{
-				Status: status.OK,
-			}, nil
-		}
+//		if (k == "custom_token_header") && v == cfg.AuthKey {
+//			log.Infof("success!!")
+//			return &v1beta1.CheckResult{
+//				Status: status.OK,
+//			}, nil
+//		}
 	}
 
-	log.Infof("failure; header not provided")
-	return &v1beta1.CheckResult{
-		Status: status.WithPermissionDenied("Unauthorized..."),
-	}, nil
+//	log.Infof("failure; header not provided")
+//	return &v1beta1.CheckResult{
+//		Status: status.WithPermissionDenied("Unauthorized..."),
+//	}, nil
+	
+	return &v1beta1.CheckResult{Status: status.OK,}, nil
 }
 
 // Addr returns the listening address of the server
