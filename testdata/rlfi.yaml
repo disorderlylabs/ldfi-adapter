@@ -1,61 +1,13 @@
-# handler for adapter mygrpcadapter
-## the auth_key is the value which we want to see in the header
-# The key in line 26 is the name to which we map the request header. We could have left it as is, but this is just to make the point.
-# i.e. the mixer takes the value of the header and assigns it as a value of the key in the map which is passed to the adapter code
-# that is why we look for the key "custom_token_header" in the map
-# notice how the client is passing the x-ebay-ldfi header
-
-# the first spec here is the handler
-apiVersion: "config.istio.io/v1alpha2"
-kind: handler
-metadata:
-  name: h1
-  namespace: istio-system
-spec:
-  adapter: mygrpcadapter
-  connection:
-    address: "mygrpcadapterservice:44225" 
-  params:
-    auth_key: "abc"
-
-#  we provide an input instance that uses a request header to fill in the value
----
-apiVersion: "config.istio.io/v1alpha2"
-kind: instance
-metadata:
-  name: icheck
-  namespace: istio-system
-spec:
-  template: authorization
-  params:
-    subject:
-      properties:
-        respo: ( response.headers["x-request-id"] | "unknown" )
-        #x-tags: request.headers["x-b3-flags"]
-        x-req: request.headers["x-request-id"]
-        #ldfi_baggage:  request.headers["x-datadog-trace-id"]
-        custom_token_header:  request.headers["x-ebay-ldfi"]
-        destination_svc: ( destination.service.name | "unknown" )
-        #operation: ( api.operation | "unknown" ) 
-        #api_svc: (api.service | "unknown")
-        source_name: ( source.name | "unknown" ) 
----
-
-# rule to dispatch to handler h1
 apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
-  name: r1
+  name: rlfi1
   namespace: istio-system
 spec:
   requestHeaderOperations:
         - name: x-request-id
           values: 
-            - ( request.headers["x-ebay-ldfi"] | ":(" ) + request.headers["x-request-id"]  
-  actions:
-    - handler: h1.istio-system
-      instances:
-        - icheck
+            - request.headers["x-request-id"] + "--" + ( request.headers["x-ebay-ldfi"] | "" )
 
 ---
 
