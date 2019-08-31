@@ -4,7 +4,13 @@ metadata:
   name: rlfi1
   namespace: istio-system
 spec:
+  responseHeaderOperations:
+    -
+        - name: x-request-id
+         values:
+            - request.headers["X-B3-TraceId"] + "!"
   requestHeaderOperations:
+    -
         - name: x-request-id
           values: 
             - request.headers["x-request-id"] + "--" + ( request.headers["x-ebay-ldfi"] | "" )

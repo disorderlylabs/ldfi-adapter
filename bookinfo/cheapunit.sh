@@ -13,9 +13,8 @@ done
 FILE=unit.$$.out
 
 
-echo args $args
 
-curl -vvv $args http://192.168.99.103:31380/productpage > $FILE
+curl $args http://localhost/productpage > $FILE 2>/dev/null
 
 
 # check if call to ratings succeeded:

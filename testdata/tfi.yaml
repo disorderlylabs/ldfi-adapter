@@ -49,6 +49,7 @@ metadata:
   name: r1
   namespace: istio-system
 spec:
+  match: "true"
   actions:
     - handler: h1.istio-system
       instances:
