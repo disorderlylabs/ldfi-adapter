@@ -21,7 +21,7 @@ COPY test-requirements.txt ./
 RUN pip install --no-cache-dir -r test-requirements.txt
 
 RUN apt-get update
-RUN apt-get install curl
+RUN apt-get install -y curl
 
 COPY productpage.py /opt/microservices/
 COPY tests/unit/* /opt/microservices/

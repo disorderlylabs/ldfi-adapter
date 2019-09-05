@@ -2,7 +2,7 @@ get the adapter running
 
 kubectl apply -f ../cluster_service.yaml 
 kubectl apply -f ../testdata/mygrpcadapter.yaml 
-kubectl apply -f ../testdata/
+kubectl apply -f ../testdata/attributes.yaml
 kubectl apply -f ../testdata/template.yaml 
 kubectl apply -f ../testdata/tfi.yaml 
 

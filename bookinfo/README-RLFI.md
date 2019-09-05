@@ -14,6 +14,10 @@ kubectl apply -f details_bad.yaml
 kubectl apply -f ratings_bad.yaml 
 kubectl apply -f reviews_bad.yaml 
 
+#  kubectl delete -f samples/bookinfo/platform/kube/bookinfo.yaml
+
+#  kubectl apply -f bookinfo_local.yaml
+
 set up propagation: 
 
 kubectl apply -f ../testdata/rlfi.yaml

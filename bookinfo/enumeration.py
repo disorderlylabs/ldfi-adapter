@@ -4,14 +4,14 @@ import hashlib
 import sys
 from itertools import chain, combinations
 
-product = "http://localhost/productpage"
+product = "http://192.168.99.106:31380/productpage"
 product_md5 = "b34651e8a6df854429c4ed038c00cc4c"
 
 
 def thread_func(spec):
     resp = requests.get(product, headers={'x-ebay-ldfi': spec})
     #print(resp.status_code)
-    result = hashlib.md5(resp.content.encode())
+    result = hashlib.md5(resp.text.encode('utf-8'))
     if result.hexdigest() != product_md5:
         print("%s %d MISMATCH %s  %s"  % (spec, resp.status_code, result.hexdigest(), product_md5))
 
