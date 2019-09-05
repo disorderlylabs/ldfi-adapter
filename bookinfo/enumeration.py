@@ -34,7 +34,8 @@ for item in powerset(services):
 
 
 threadcnt = int(sys.argv[1])
-threadcnt = 200
+#threadcnt = 200
+
 
 for i in range(threadcnt):
     x = threading.Thread(target=thread_func, args=(None,))
